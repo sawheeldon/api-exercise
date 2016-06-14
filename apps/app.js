@@ -1,16 +1,33 @@
 $(function(){
-    $.getJSON('http://www.omdbapi.com/?s=Star%20Wars&r=json', function(data){
-        showResults(data.Search);
+    $('#search-term').submit(function(event){
+        event.preventDefault();
+        var searchTerm = $('#query').val();
+        //alert(searchTerm);
+        getRequest(searchTerm);
     });
 });
 
-function showResults(results){
-    var html="";
-    $.each(results, function(index,value){
-        html += '<p>' + value.Title + '</p>'
-        console.log(value.Title);
+function getRequest(searchTerm){
+    //alert(searchTerm);
+    var params = {
+        s: searchTerm,
+        r: 'json'
+    };
+    url = 'http://www.omdbapi.com';
+
+    $.getJSON(url, params, function(data){
+        //console.log(data);
+        showResults(data.Search);
     });
-    $('#search-results').html(html);
+}
+function showResults(results){
+    console.log(results);
+    var output= "";
+    $.each(results, function(index,value){
+        output += '<p>' + value.Title + '</p>';
+        //console.log(value.Title);
+    });
+    $('#search-results').html(output);
 }
 
 
